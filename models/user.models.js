@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+
+import { config } from '../config/server.config.js';
 
 const UserSchema = mongoose.Schema(
   {
@@ -48,6 +51,16 @@ const UserSchema = mongoose.Schema(
     stric: true,
   }
 );
+
+UserSchema.pre('save', async function (next) {
+  bcrypt.hash(this.password, config.SALT_ROUND, async (err, saltPassword) => {
+    if (saltPassword) {
+      this.password = saltPassword;
+      await this.save();
+    }
+    next();
+  });
+});
 
 const User = mongoose.model('User', UserSchema);
 export default User;

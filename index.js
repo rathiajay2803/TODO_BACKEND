@@ -5,6 +5,7 @@ import cors from 'cors';
 import { config } from './config/server.config.js';
 import connectToDB from './config/db.config.js';
 import apiRouter from './routes/index.js';
+import errorHandler from './utils/errorHandler.js';
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,9 @@ app.use(
   })
 );
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/ping', (req, res) => {
   res.status(200).json({
     msg: 'Server is working',
@@ -26,6 +30,8 @@ app.get('/ping', (req, res) => {
 });
 
 app.use('/api', apiRouter);
+
+app.use(errorHandler);
 
 app.listen(config.PORT, async (req, res) => {
   console.log(`Server is listening at PORT `, config.PORT);
