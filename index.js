@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import { config } from './config/server.config.js';
 import connectToDB from './config/db.config.js';
@@ -20,8 +21,11 @@ app.use(
   })
 );
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(config.COOKIE_SECRET));
+
 
 app.get('/ping', (req, res) => {
   res.status(200).json({

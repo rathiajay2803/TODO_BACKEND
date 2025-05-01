@@ -1,6 +1,10 @@
 import express from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { registerUser } from '../../controllers/users.controller.js';
+import {
+  login,
+  registerUser,
+  verifyUser,
+} from '../../controllers/users.controller.js';
 import { validateUser } from '../../validators/user.validator.js';
 
 const userRouter = express.Router();
@@ -13,5 +17,7 @@ userRouter.get('/health', (req, res) => {
 });
 
 userRouter.post('/register', validateUser, registerUser);
+userRouter.get('/verify/:token', verifyUser);
+userRouter.post('/login', login);
 
 export default userRouter;

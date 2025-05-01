@@ -42,6 +42,7 @@ const sendmail = async (user, verificationLink) => {
     throw new BadGateway('SendMail', {
       serviceName: 'sendMail',
       msg: `Getting error while sending mail to user ${user.name}- ${user.email}`,
+      error: err,
     });
   }
 };
